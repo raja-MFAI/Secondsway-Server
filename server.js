@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const initializeCronJobs = require('./cornJobs');
 const dotenv = require('dotenv');
 const path = require('path');
 
@@ -10,6 +11,7 @@ const { MONGO_URI } = require('./config');
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
+const biddablesRoutes = require('./routes/biddablesRoutes'); 
 
 dotenv.config();
 
@@ -27,8 +29,12 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/auth', authRoutes);
 app.use('/products', productRoutes);
 app.use('/upload',authMiddleware, uploadRoutes); 
+app.use('/biddables', biddablesRoutes);
 
 
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => app.listen(5000, () => console.log('Server running on port 5000')))
+    .then(() => app.listen(5000, () => {
+         console.log('Server running on port 5000');
+         initializeCronJobs(); // Start the cron jobs
+        }))
     .catch((error) => console.log(error)); 
