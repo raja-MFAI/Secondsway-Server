@@ -17,10 +17,29 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
+
+const allowedOrigins = [
+    'https://secondsway-off.onrender.com',
+    'http://localhost:3000'
+];
+
 app.use(cors({
-    origin: 'http://localhost:3000',  // Replace with the exact origin of your frontend
-    credentials: true,                // Allow credentials
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
 }));
+
+
+
+// app.use(cors({
+//     origin: 'https://secondsway-off.onrender.com',  // Replace with the exact origin of your frontend
+//     credentials: true,                // Allow credentials
+// }));
 
 
 // Static folder for uploaded images
