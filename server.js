@@ -12,6 +12,7 @@ const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const biddablesRoutes = require('./routes/biddablesRoutes'); 
+const orderRoutes = require('./routes/orderRoutes');
 
 dotenv.config();
 
@@ -49,6 +50,7 @@ app.use('/auth', authRoutes);
 app.use('/products', productRoutes);
 app.use('/upload',authMiddleware, uploadRoutes); 
 app.use('/biddables', biddablesRoutes);
+app.use('/orders', orderRoutes);
 
 
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
